@@ -13,8 +13,6 @@ test.beforeAll(async ({ browser }) => {
 
     await page.getByRole('button', { name: 'Login' }).click();
 
-
-
 })
 
 test.afterAll(async () => {
