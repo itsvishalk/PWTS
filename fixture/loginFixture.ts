@@ -1,20 +1,39 @@
-// import { test as base, Page } from '@playwright/test';
+import { Page, test as base } from '@playwright/test';
+import { LoginPage } from '../Pages/loginPage';
+import { ProductListpage } from '../Pages/Productlistpage';
 
-// type MyFixture = {
-//   loggedinpage: Page;
-// };
+type myFixture = {
 
-// export const test = base.extend<MyFixture>({
-//   loggedinpage: async ({ page }, use) => {
+    loginpage: LoginPage;
+    productlistpage: ProductListpage;
+    loggedinpage: Page;
 
-//     await page.goto('https://www.saucedemo.com/');
 
-//     await page.getByPlaceholder('Username').fill('standard_user');
+}
+export const test = base.extend<myFixture>({
 
-//     await page.getByPlaceholder('Password').fill('secret_sauce');
 
-//     await page.getByRole('button', { name: 'Login' }).click();
+    loginpage: async ({ page }, use) => {
 
-//     await use(page);
-//   },
-// });
+        await use(new LoginPage(page));
+
+    },
+
+    productlistpage: async ({ page }, use) => {
+
+        await use(new ProductListpage(page));
+
+    },
+
+    loggedinpage: async ({ page, loginpage }, use) => {
+
+        await loginpage.openApplication();
+        await loginpage.doLogin();
+        await use(page);
+
+    }
+
+
+
+})
+export { expect } from '@playwright/test'
